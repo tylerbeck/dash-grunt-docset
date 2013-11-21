@@ -1,0 +1,8 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../assets/main.css" />
+</head>
+<body>
+	<div class="page"><%= pageContent %></div>
+</body>
+</html>

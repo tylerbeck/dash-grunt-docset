@@ -1,0 +1,25 @@
+{
+	"name": "dash-grunt-docset",
+	"description": "grunt docset builder for Dash",
+	"version": "0.1.0",
+	"author": {
+		"name": "Tyler Beck",
+		"url": "http://www.github.com/tylerbeck/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/tylerbeck/dash-grunt-docset.git"
+	},
+	"bugs": {
+		"url": "http://github.com/tylerbeck/dash-grunt-docset/issues"
+	},
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"sqlite3": "~2.1.19",
+		"jsdom": "~0.8.8",
+		"lodash": "~2.3.0",
+		"fs-extra": "~0.8.1",
+		"grunt-cli": "~0.1.11",
+		"q": "~0.9.7"
+	}
+}

@@ -1,0 +1,6 @@
+.DS_STORE
+.idea
+dash-grunt-docset.iml
+node_modules
+grunt.docset/Contents/Resources/Documents/content
+grunt.docset/Contents/Resources/docSet.dsidx
