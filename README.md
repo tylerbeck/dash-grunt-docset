@@ -1,7 +1,7 @@
 dash-grunt-docset
 =================
 
-That's right... using Grunt to generate a Grunt docset for Dash
+That's right... using Grunt to generate a Grunt docset for [Dash](http://kapeli.com/dash)
 
 ##How to use
 
