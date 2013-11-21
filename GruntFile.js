@@ -1,16 +1,20 @@
 module.exports = function( grunt ){
 
+	// load node modules ------------------
 	var jsdom = require('jsdom');
 	var _ = require('lodash');
 	var q = require('q');
 	var fs = require("fs-extra");
 	var sqlite3 = require('sqlite3').verbose();
+	var marked = require('marked');
 
 	var dbFile = "grunt.docset/Contents/Resources/docSet.dsidx";
 	var cpath = "grunt.docset/Contents/Resources/Documents/content/";
+	var node_module_path = "node_modules";
 
+	// build config -----------------------
 	var config = {
-		loadAndExtractHTML: {
+		fetchGruntDocs: {
 			"grunt-core": {
 				type: 'Module',
 				headings: true,
@@ -130,19 +134,44 @@ module.exports = function( grunt ){
 					},
 				]
 			}
+		},
+		loadReadmeFiles:{
+			core: {
+				node_module_path: "node_modules"
+			}
 		}
 	};
+	//add paths pased as args
+	var args = process.argv;
+	var isUserDir = /^\-\-([a-z_\-0-9]+)=(.*)$/i;
+	args.forEach( function( arg ){
+		var matches = arg.match( isUserDir );
+		if (matches){
+			if ( grunt.file.isDir(matches[2]) ){
+				grunt.log.writeln( "Adding '"+matches[2]+"' to node_modules list");
+				config['loadReadmeFiles'][ matches[1] ] = { node_module_path: matches[2] };
+			}
+			else {
+				grunt.log.errorln( "'"+matches[2]+"' is not a valid directory");
+			}
+		}
+	});
 
 	grunt.initConfig( config );
 
-	grunt.loadNpmTasks('grunt-markdown');
-
-	grunt.registerTask('build',[
+	// register default task ---------------
+	grunt.registerTask('default',[
 		'init',
-		'loadAndExtractHTML:grunt-core',
-		'loadAndExtractHTML:grunt-guides'
+		'fetchGruntDocs',
+	    'loadReadmeFiles'
 	]);
 
+	grunt.registerTask('test', function(){
+		console.log( process.argv );
+	});
+
+	// helper methods ----------------------
+	// insert record, inserts a record into the docset sqlite3 database
 	function insertRecord( db, name, type, path ){
 		var d = q.defer();
 		db.run("INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('"+name+"', '"+type+"', '"+path+"');", function(){
@@ -151,8 +180,9 @@ module.exports = function( grunt ){
 		return d.promise;
 	}
 
-	grunt.registerMultiTask( 'loadAndExtractHTML', function(){
-		//grunt.verbose.writeln( JSON.stringify( this.data.list, null, '\t' ) );
+	// create tasks
+	grunt.registerMultiTask( 'fetchGruntDocs', function(){
+
 		var template = grunt.file.read( "page.template" );
 
 		var done = this.async();
@@ -237,6 +267,50 @@ module.exports = function( grunt ){
 
 	} );
 
+	grunt.registerMultiTask( 'loadReadmeFiles', function(){
+
+		var done = this.async();
+		var isGrunt = /^grunt\-/;
+		var promises = [];
+		var db = new sqlite3.Database( dbFile, sqlite3.OPEN_READWRITE );
+		var template = grunt.file.read( "page.template" );
+
+		var node_module_path = this.data.node_module_path;
+
+		fs.readdirSync( node_module_path ).forEach( function ( file ) {
+			if (file.match(isGrunt)){
+				//TODO: update to account for case variations
+				var readmePath = node_module_path+"/"+file+"/README.md";
+				if ( grunt.file.exists( readmePath ) ){
+					console.log('loading: %s', readmePath );
+					var d = q.defer();
+					var md = grunt.file.read( readmePath );
+					marked( md, function( err, result ){
+						if (err) d.reject(err);
+						var html = _.template( template, {pageContent:'<div class="hero-unit">'+result+'</div>'} );
+						html = html.replace(/href=['"]http:\/\/gruntjs\.com\/([^'"]+)['"]/, "href=\"../content/$1.html\"");
+
+						//save html
+						var fpath = cpath+file+".html";
+						grunt.file.write( fpath, html );
+
+						//add records
+						promises.push( insertRecord( db, file, "Plugin", "content/"+file+".html" ) );
+						d.resolve();
+					});
+
+					promises.push( d.promise );
+				}
+			}
+		});
+
+		q.all( promises ).
+			then( function(){
+			   done();
+		    });
+
+	});
+
 	grunt.registerTask('init', function(){
 		var done = this.async();
 		fs.removeSync( dbFile );
@@ -250,5 +324,3 @@ module.exports = function( grunt ){
 		});
 	});
 };
-
-//file:///Users/tylerbeck/Projects/dash/grunt.docset/Contents/Resources/Documents/content/grunt.task.html#grunt.task.registermultitask

@@ -1,25 +1,54 @@
 {
-	"name": "dash-grunt-docset",
-	"description": "grunt docset builder for Dash",
-	"version": "0.1.0",
-	"author": {
-		"name": "Tyler Beck",
-		"url": "http://www.github.com/tylerbeck/"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/tylerbeck/dash-grunt-docset.git"
-	},
-	"bugs": {
-		"url": "http://github.com/tylerbeck/dash-grunt-docset/issues"
-	},
-	"devDependencies": {
-		"grunt": "~0.4.1",
-		"sqlite3": "~2.1.19",
-		"jsdom": "~0.8.8",
-		"lodash": "~2.3.0",
-		"fs-extra": "~0.8.1",
-		"grunt-cli": "~0.1.11",
-		"q": "~0.9.7"
-	}
+  "name": "dash-grunt-docset",
+  "description": "grunt docset builder for Dash",
+  "version": "0.1.0",
+  "author": {
+    "name": "Tyler Beck",
+    "url": "http://www.github.com/tylerbeck/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tylerbeck/dash-grunt-docset.git"
+  },
+  "bugs": {
+    "url": "http://github.com/tylerbeck/dash-grunt-docset/issues"
+  },
+  "devDependencies": {
+    "sqlite3": "~2.1.19",
+    "jsdom": "~0.8.8",
+    "lodash": "~2.3.0",
+    "fs-extra": "~0.8.1",
+	"q": "~0.9.7",
+	"marked": "~0.2.10",
+	"grunt": "latest",
+	"grunt-cli": "latest",
+	"grunt-contrib-clean": "latest",
+    "grunt-contrib-coffee": "latest",
+    "grunt-contrib-compass": "latest",
+    "grunt-contrib-compress": "latest",
+    "grunt-contrib-concat": "latest",
+    "grunt-contrib-connect": "latest",
+    "grunt-contrib-copy": "latest",
+    "grunt-contrib-csslint": "latest",
+    "grunt-contrib-cssmin": "latest",
+    "grunt-contrib-handlebars": "latest",
+    "grunt-contrib-htmlmin": "latest",
+    "grunt-contrib-imagemin": "latest",
+    "grunt-contrib-jade": "latest",
+    "grunt-contrib-jasmine": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-jst": "latest",
+    "grunt-contrib-less": "latest",
+    "grunt-contrib-livereload": "latest",
+    "grunt-contrib-mincss": "latest",
+    "grunt-contrib-nodeunit": "latest",
+    "grunt-contrib-qunit": "latest",
+    "grunt-contrib-requirejs": "latest",
+    "grunt-contrib-sass": "latest",
+    "grunt-contrib-stylus": "latest",
+    "grunt-contrib-symlink": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-contrib-yuidoc": "latest"
+  }
 }
