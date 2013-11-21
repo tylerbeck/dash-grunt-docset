@@ -295,7 +295,7 @@ module.exports = function( grunt ){
 						grunt.file.write( fpath, html );
 
 						//add records
-						promises.push( insertRecord( db, file, "Plugin", "content/"+file+".html" ) );
+						promises.push( insertRecord( db, file, "Package", "content/"+file+".html" ) );
 						d.resolve();
 					});
 
