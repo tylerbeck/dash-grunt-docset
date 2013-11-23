@@ -152,7 +152,7 @@ module.exports = function( grunt ){
 				config['loadReadmeFiles'][ matches[1] ] = { node_module_path: matches[2] };
 			}
 			else {
-				grunt.log.errorln( "'"+matches[2]+"' is not a valid directory");
+				grunt.log.error( "'"+matches[2]+"' is not a valid directory");
 			}
 		}
 	});
